@@ -90,6 +90,25 @@ app.put('/tasks/:id/status/:status',(req,res)=>{
     })
 })
 
+app.delete('/tasks/:id/delete',(req,res)=>{
+     
+    connection.query('DELETE FROM tasks WHERE id = ?',[id],(err,rows)=>{
+        if(!err){
+            if(rows.affectedRows>0){
+                res.json(functions.response('sucesso','task delete', rows.affectedRows,null))
+               
+            }
+            else{
+                 res.json(functions.response('atenção','task não encontrada',0,null));
+            }
+           
+        }
+         else{
+                 res.json(functions.response('erro', err.message,0,null))
+            }
+    })
+})
+
 //tratar erro de rota
 app.use((req,res)=>{
     res.json(functions.response('atenção','rota não encontrada',0,null));
